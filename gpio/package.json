@@ -1,0 +1,16 @@
+{
+  "name": "gpio-server",
+  "version": "1.0.0",
+  "description": "Socket server for manipulating GPIO",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "rpio": "^0.9.16",
+    "net": "*"
+  },
+  "author": "Jakob Givoni",
+  "license": "ISC"
+}
