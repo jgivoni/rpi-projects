@@ -7,15 +7,26 @@ var server = net.createServer((c) => {
     c.on('end', () => {
         console.log('Client disconnected');
     });
+    var stream = "";
     c.on('data', (data) => {
-        
-        rpio.open(12, rpio.OUTPUT, rpio.LOW);
+        stream += data.toString();
 
-        rpio.write(12, rpio.HIGH);
-        rpio.sleep(1);
+        while (stream.indexOf("\n") > 0) {
+            var command = stream.substr(0, stream.indexOf("\n"));
+            stream = stream.substr(stream.indexOf("\n") + 1);
+            console.log(command);
 
-        rpio.write(12, rpio.LOW);
-        rpio.close(12);
+            var params = command.split(" ").map(function(x) {
+                return isNaN(x) ? x.trim() : parseInt(x);
+            });
+            var method = params.shift().trim();
+
+            if (rpio[method]) {
+                rpio[method].apply(rpio, params);
+            } else {
+                console.log(method + " not supported");
+            }
+        }
     });
 });
 

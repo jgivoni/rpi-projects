@@ -5,9 +5,7 @@ WORKDIR /usr/src/app
 
 RUN apk add --update --no-cache python build-base nodejs nodejs-npm
 
-COPY ./package.json /usr/src/app/
-
-RUN npm install
+RUN npm install rpio net
 
 EXPOSE 7695
 

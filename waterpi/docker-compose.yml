@@ -1,0 +1,17 @@
+version: '3.2'
+
+services:
+  waterpi:
+    image: waterpi:latest
+    build: .
+    volumes:
+    - type: bind
+      source: .
+      target: /usr/src/app
+    links:
+    - gpio
+
+  gpio:
+    image: jgivoni/rpi-gpio-server:latest
+    devices:
+      - /dev/gpiomem
