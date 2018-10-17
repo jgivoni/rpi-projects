@@ -10,8 +10,9 @@ services:
       target: /usr/src/app
     links:
     - gpio
+#    command: php ./flash1.php
 
   gpio:
     image: jgivoni/rpi-gpio-server:latest
     devices:
-      - /dev/gpiomem
+    - /dev/gpiomem

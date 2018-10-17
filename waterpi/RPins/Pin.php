@@ -6,6 +6,8 @@
 
 namespace RPins;
 
+use RPins\Adapter\BaseAdapter as Adapter;
+
 class Pin
 {
     private $adapter;
@@ -28,7 +30,7 @@ class Pin
         $this->adapter = $adapter;
     }
 
-    protected function getAdapter()
+    protected function getAdapter(): Adapter
     {
         if (!isset($this->adapter)) {
             $this->adapter = new NullAdapter();
@@ -39,9 +41,23 @@ class Pin
     protected function open()
     {
         if (!$this->open) {
-            $this->getAdapter()->open($this->getPin(), Adapter::OUT);
+            $this->getAdapter()->open($this->getPin(), Adapter::DIRECTION_OUT);
+            $this->open = true;
         }
-        $this->open = true;
+    }
+
+    protected function close()
+    {
+        if (!$this->open) {
+            $this->getAdapter()->close($this->getPin());
+            $this->open = false;
+        }
+    }
+
+    protected function setIntensity($intensity)
+    {
+        $this->open();
+        $this->getAdapter()->write($this->getPin(), $intensity);
     }
 
     /**
@@ -49,11 +65,16 @@ class Pin
      */
     public function on()
     {
-        $this->getAdapter()->write($this->getPin(), Adapter::HIGH);
+        $this->setIntensity(Adapter::INTENSITY_HIGH);
     }
 
     public function off()
     {
-        $this->getAdapter()->write($this->getPin(), Adapter::LOW);
+        $this->setIntensity(Adapter::INTENSITY_LOW);
+    }
+
+    public function __destruct()
+    {
+        $this->close();
     }
 }

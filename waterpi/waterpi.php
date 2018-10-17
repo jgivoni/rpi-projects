@@ -4,14 +4,12 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 echo "Starting WaterPi!";
 
-$adapter = new \RPins\Adapter\SocketAdapter();
-$adapter->open(12, 1);
+$led = new \RPins\Pin(12);
+$led->setAdapter(new RPins\Adapter\SocketAdapter());
 
 while (true) {
-    $adapter->write(12, 1);
+    $led->on();
     sleep(2);
-    $adapter->write(12, 0);
+    $led->off();
     sleep(1);
 }
-
-$adapter->close(12);
