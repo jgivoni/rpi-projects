@@ -4,12 +4,18 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 echo "Starting WaterPi!";
 
-$led = new \RPins\Pin(12);
+$switch = new \RPins\InPin(12);
 $led->setAdapter(new RPins\Adapter\SocketAdapter());
 
+$on = false;
 while (true) {
-    $led->on();
-    sleep(2);
-    $led->off();
-    sleep(1);
+    if (!$on && $switch->on()) {
+        echo "Switched on!\n";
+        $on = true;
+    }
+    if ($on && $switch->off()) {
+        echo "Switched off!\n";
+        $on = false;
+    }
+    usleep(100000);
 }

@@ -16,3 +16,4 @@ services:
     image: jgivoni/rpi-gpio-server:latest
     devices:
     - /dev/gpiomem
+    privileged: true # Needed for PWM
