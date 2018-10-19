@@ -22,7 +22,13 @@ var server = net.createServer((c) => {
             var method = params.shift().trim();
 
             if (rpio[method]) {
-                rpio[method].apply(rpio, params);
+                var result = rpio[method].apply(rpio, params);
+                if (typeof result === 'boolean' || typeof result === 'number') {
+                    result = result.toString();
+                }
+                if (typeof result === 'string') {
+                    c.write(result);
+                }
             } else {
                 console.log(method + " not supported");
             }

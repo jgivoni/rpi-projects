@@ -13,7 +13,7 @@ use RPins\Adapter\BaseAdapter as Adapter;
  */
 class InPin extends Pin
 {
-    private $on;
+    private $on = false;
     private $changed = false;
 
     public function __construct($pin)
@@ -24,9 +24,9 @@ class InPin extends Pin
 
     protected function readState()
     {
-        $this->open();
+        $this->open(Adapter::PULL_DOWN);
         $on = $this->getAdapter()->read($this->getPin());
-        if (isset($input)) {
+        if (isset($on)) {
             if ($this->on !== $on) {
                 $this->on = $on;
                 $this->changed = true;

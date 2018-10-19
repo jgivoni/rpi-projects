@@ -30,13 +30,16 @@ class SocketAdapter extends BaseAdapter
     {
         $input = '';
         for ($i = 0; $i < 10; $i++) {
-            $input .= fread($this->getSocket(), $length - strlen($input));
-            if (strlen($input) == $length) {
+            $result = fread($this->getSocket(), $length - strlen($input));
+            if (!$result === false) {
+                $input .= $result;
+            }
+            if (strlen($input) >= $length) {
                 break;
             }
             usleep(self::READ_TIMEOUT_MS * 100);
         }
-        return $input;
+        return substr($input, 0, $length);
     }
 
     public function open($pin, $direction, $arg2)
