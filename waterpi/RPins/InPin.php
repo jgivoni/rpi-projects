@@ -13,8 +13,11 @@ use RPins\Adapter\BaseAdapter as Adapter;
  */
 class InPin extends Pin
 {
+    const MIN_READ_INTERVAL_MS = 50;
+
     private $on = false;
     private $changed = false;
+    private $lastRead;
 
     public function __construct($pin)
     {
@@ -32,6 +35,14 @@ class InPin extends Pin
                 $this->changed = true;
             }
         }
+        $this->lastRead = microtime(true);
+    }
+
+    public function getState()
+    {
+        if (!isset($this->lastRead) || $this->lastRead < microtime(true) - self::MIN_READ_INTERVAL_MS / 1000) {
+            $this->readState();
+        }
         return $this->on;
     }
 
@@ -40,23 +51,19 @@ class InPin extends Pin
      */
     public function on()
     {
-        return $this->readState();
+        return $this->getState();
     }
 
     public function off()
     {
-        return !$this->readState();
+        return !$this->getState();
     }
 
     public function changed()
     {
+        $this->getState();
         $changed = $this->changed;
         $this->changed = false;
         return $changed;
-    }
-
-    public function getState()
-    {
-        return $this->on;
     }
 }

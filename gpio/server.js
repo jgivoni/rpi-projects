@@ -14,7 +14,7 @@ var server = net.createServer((c) => {
         while (stream.indexOf("\n") > 0) {
             var command = stream.substr(0, stream.indexOf("\n"));
             stream = stream.substr(stream.indexOf("\n") + 1);
-            console.log(command);
+            console.log("In: " + command);
 
             var params = command.split(" ").map(function(x) {
                 return isNaN(x) ? x.trim() : parseInt(x);
@@ -27,6 +27,7 @@ var server = net.createServer((c) => {
                     result = result.toString();
                 }
                 if (typeof result === 'string') {
+                    console.log("Out: " + result);
                     c.write(result);
                 }
             } else {

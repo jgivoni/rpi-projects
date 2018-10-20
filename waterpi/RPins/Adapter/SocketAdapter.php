@@ -12,34 +12,24 @@ class SocketAdapter extends BaseAdapter
     {
         if (!isset($this->socket)) {
             $this->socket = fsockopen('gpio', '7695');
+            stream_set_timeout($this->getSocket(), 0, self::READ_TIMEOUT_MS * 1000);
+            $this->receive(10000); // Flush the welcome response
         }
         return $this->socket;
     }
 
     protected function send($command)
     {
+        echo "Out: " . $command . PHP_EOL;
         fwrite($this->getSocket(), $command . PHP_EOL);
-    }
-
-    protected function flushInput()
-    {
-        fread($this->getSocket(), 10000);
     }
 
     protected function receive($length)
     {
-        $input = '';
-        for ($i = 0; $i < 10; $i++) {
-            $result = fread($this->getSocket(), $length - strlen($input));
-            if (!$result === false) {
-                $input .= $result;
-            }
-            if (strlen($input) >= $length) {
-                break;
-            }
-            usleep(self::READ_TIMEOUT_MS * 100);
-        }
-        return substr($input, 0, $length);
+        $in = fread($this->getSocket(), $length);
+        echo "In: " . $in . PHP_EOL;
+
+        return $in === false ? '' : $in;
     }
 
     public function open($pin, $direction, $arg2)
@@ -54,7 +44,6 @@ class SocketAdapter extends BaseAdapter
 
     public function read($pin)
     {
-        $this->flushInput();
         $this->send('read ' . $pin);
         $input = $this->receive(1);
         return $input == '' ? null : (bool) $input;

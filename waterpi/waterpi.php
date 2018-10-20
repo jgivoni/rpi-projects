@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-echo "Starting WaterPi!";
+echo "Starting WaterPi!" . PHP_EOL;
 
 $adapter = new RPins\Adapter\SocketAdapter();
 $switch = new \RPins\InPin(7);
@@ -11,17 +11,15 @@ $switch->setAdapter($adapter);
 $led = new \RPins\OutPin(12);
 $led->setAdapter($adapter);
 
-$on = false;
 while (true) {
-    if (!$on && $switch->on()) {
-        echo "Switched on!\n";
-        $led->on();
-        $on = true;
+    if ($switch->changed()) {
+        if ($switch->on()) {
+            echo "Switched on!\n";
+            $led->on();
+        } else {
+            echo "Switched off!\n";
+            $led->off();
+        }
     }
-    if ($on && $switch->off()) {
-        echo "Switched off!\n";
-        $led->off();
-        $on = false;
-    }
-    usleep(100000);
+    usleep(10000);
 }
