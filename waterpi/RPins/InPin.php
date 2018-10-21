@@ -9,7 +9,7 @@ namespace RPins;
 use RPins\Adapter\BaseAdapter as Adapter;
 
 /**
- * A digital out pin that can only have two states: On or Off
+ * A digital in pin that can only read two states: On or Off
  */
 class InPin extends Pin
 {

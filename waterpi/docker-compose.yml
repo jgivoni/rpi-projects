@@ -10,7 +10,7 @@ services:
       target: /usr/src/app
     links:
     - gpio
-#    command: php ./flash1.php
+#    command: php ./pulse1.php
 
   gpio:
     image: jgivoni/rpi-gpio-server:latest

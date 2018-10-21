@@ -4,7 +4,7 @@ namespace RPins\Adapter;
 
 interface AdapterInterface
 {
-    public function open($pin, $direction, $arg2);
+    public function open($pin, $direction, $arg2 = '');
 
     public function close($pin);
 

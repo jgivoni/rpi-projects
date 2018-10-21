@@ -14,4 +14,12 @@ abstract class BaseAdapter implements AdapterInterface
     const PULL_OFF = 0;
     const PULL_DOWN = 1;
     const PULL_UP = 2;
+
+    protected $debug;
+
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
+        return $this;
+    }
 }

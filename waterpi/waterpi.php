@@ -5,21 +5,11 @@ require_once __DIR__ . '/vendor/autoload.php';
 echo "Starting WaterPi!" . PHP_EOL;
 
 $adapter = new RPins\Adapter\SocketAdapter();
-$switch = new \RPins\InPin(7);
-$switch->setAdapter($adapter);
-
-$led = new \RPins\OutPin(12);
-$led->setAdapter($adapter);
+$adapter->setDebug(false);
+$sensor = new \RPins\AnalogInPinPair(12, 15);
+$sensor->setAdapter($adapter);
 
 while (true) {
-    if ($switch->changed()) {
-        if ($switch->on()) {
-            echo "Switched on!\n";
-            $led->on();
-        } else {
-            echo "Switched off!\n";
-            $led->off();
-        }
-    }
-    usleep(10000);
+    echo $sensor->getValue() . PHP_EOL;
+    sleep(1);
 }

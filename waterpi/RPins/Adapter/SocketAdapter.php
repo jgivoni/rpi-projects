@@ -20,19 +20,23 @@ class SocketAdapter extends BaseAdapter
 
     protected function send($command)
     {
-        echo "Out: " . $command . PHP_EOL;
+        if ($this->debug) {
+            echo "Out: " . $command . PHP_EOL;
+        }
         fwrite($this->getSocket(), $command . PHP_EOL);
     }
 
     protected function receive($length)
     {
         $in = fread($this->getSocket(), $length);
-        echo "In: " . $in . PHP_EOL;
+        if ($this->debug) {
+            echo "In: " . $in . PHP_EOL;
+        }
 
         return $in === false ? '' : $in;
     }
 
-    public function open($pin, $direction, $arg2)
+    public function open($pin, $direction, $arg2 = '')
     {
         $this->send('open ' . $pin . ' ' . $direction . ' ' . $arg2);
     }
