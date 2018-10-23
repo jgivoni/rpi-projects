@@ -8,6 +8,13 @@ var server = net.createServer((c) => {
         console.log('Client disconnected');
     });
     var stream = "";
+
+    var specialParams = {
+        'cb': function(pin) {
+            c.write('X');
+        }
+    };
+
     c.on('data', (data) => {
         stream += data.toString();
 
@@ -17,7 +24,11 @@ var server = net.createServer((c) => {
             console.log("In: " + command);
 
             var params = command.split(" ").map(function(x) {
-                return isNaN(x) ? x.trim() : parseInt(x);
+                if (x.indexOf(':') === 0) {
+                    return specialParams[x.substr(1)];
+                } else {
+                    return isNaN(x) ? x.trim() : parseInt(x);
+                }
             });
             var method = params.shift().trim();
 
