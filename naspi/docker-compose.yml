@@ -1,0 +1,19 @@
+version: '3.2'
+
+services:
+  gcloud-backup:
+    image: jgivoni/rpi-aws-s3-sync
+    container_name: gcloud-backup
+    restart: unless-stopped
+    environment:
+      KEY: "AKIAITJSPZJUL3LC755A"
+      SECRET: "$AWS_SECRET"
+      REGION: "eu-west-1"
+      BUCKET: "jgivoni-gcloud-backup"
+      CRON_SCHEDULE: "0 4 */3 * *"
+      PARAMS: "--exclude video/* --include video/Home-video/* --exclude audio/music/artists/* --exclude install/* --exclude tmp/* --exclude sync/*"
+    volumes:
+      - "/media/usb:/data:ro"
+
+#  rtorrent:
+#    image: jgivoni/rpi-gpio-server:latest
