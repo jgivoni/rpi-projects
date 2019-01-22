@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e
 
@@ -9,6 +9,6 @@ export AWS_DEFAULT_REGION=$REGION
 if [[ "$1" == 'now' ]]; then
     exec /sync.sh
 else
-	echo "$CRON_SCHEDULE /sync.sh" >> /var/spool/cron/crontabs/root
+	echo "$CRON_SCHEDULE /sync.sh >/dev/stdout 2>/dev/stderr" >> /var/spool/cron/crontabs/root
     crond -l 2 -f
 fi

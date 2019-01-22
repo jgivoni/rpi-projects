@@ -11,7 +11,13 @@ services:
       REGION: "eu-west-1"
       BUCKET: "jgivoni-gcloud-backup"
       CRON_SCHEDULE: "0 4 */3 * *"
-      PARAMS: "--exclude video/* --include video/Home-video/* --exclude audio/music/artists/* --exclude install/* --exclude tmp/* --exclude sync/*"
+      PARAMS: "--storage-class STANDARD_IA
+        --exclude video/*
+        --include video/Home-video/*
+        --exclude audio/music/artists/*
+        --exclude install/*
+        --exclude tmp/*
+        --exclude sync/*"
     volumes:
       - "/media/usb:/data:ro"
 
