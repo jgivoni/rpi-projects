@@ -16,6 +16,9 @@ abstract class Pin
     private $direction;
     private $open = false;
 
+    /**
+     * @param $pin Pin number, sequentially numbered from 1-40, starting from upper left corner (not GPIO numbers)
+     */
     public function __construct($pin)
     {
         $this->pin = $pin;

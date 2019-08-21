@@ -2,6 +2,9 @@
 
 namespace RPins\Adapter;
 
+/**
+ * A socket adapter that communicates with jgivoni/rpi-gpio-server nodejs service
+ */
 class SocketAdapter extends BaseAdapter
 {
     const READ_TIMEOUT_MS = 100;

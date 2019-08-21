@@ -1,0 +1,18 @@
+version: '3.2'
+
+services:
+  tinkerpi:
+    image: tinkerpi:latest
+    build: .
+    volumes:
+    - type: bind
+      source: .
+      target: /usr/src/app
+    links:
+    - gpio
+
+  gpio:
+    image: jgivoni/rpi-gpio-server:latest
+    devices:
+    - /dev/gpiomem
+    privileged: true # Needed for PWM

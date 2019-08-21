@@ -12,6 +12,8 @@ services:
       BUCKET: "jgivoni-gcloud-backup"
       CRON_SCHEDULE: "0 4 */3 * *"
       PARAMS: "--storage-class STANDARD_IA
+        --no-follow-symlinks
+        --acl private
         --exclude video/*
         --include video/Home-video/*
         --exclude audio/music/artists/*
