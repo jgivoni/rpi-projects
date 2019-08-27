@@ -1,7 +1,7 @@
 version: '3.2'
 
 services:
-  waterpi:
+  welcomepi:
     image: welcomepi:latest
     build: .
     volumes:

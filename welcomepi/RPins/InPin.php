@@ -28,6 +28,7 @@ class InPin extends Pin
     protected function readState()
     {
         $this->open(Adapter::PULL_DOWN);
+        $on = $this->getAdapter()->read($this->getPin());
         if (isset($on)) {
             if ($this->on !== $on) {
                 $this->on = $on;
