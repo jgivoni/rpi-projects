@@ -5,14 +5,22 @@ services:
     image: welcomepi:latest
     build: .
     volumes:
-    - type: bind
-      source: .
-      target: /usr/src/app
+      - type: bind
+        source: .
+        target: /usr/src/app
     links:
-    - gpio
+      - gpio
+    restart: unless-stopped
 
   gpio:
     image: jgivoni/rpi-gpio-server:latest
     devices:
-    - /dev/gpiomem
+      - /dev/gpiomem
     privileged: true # Needed for PWM
+    restart: unless-stopped
+
+#  composer:
+#    image: composer
+#    command: composer update --ignore-platform-reqs
+#    volumes:
+#      - .:/app

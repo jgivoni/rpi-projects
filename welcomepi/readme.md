@@ -1,11 +1,10 @@
 **TinkerPi**
 
 *Install dependencies*
-```
-$ docker run --rm -it \
-    --volume $PWD:/app \
-    --user $(id -u):$(id -g) \
-    composer install
+```    
+$ docker run --rm -it -v \
+    "$(cd $(dirname "$1") && pwd -P)/$(basename "$1"):/app" \
+    composer install --ignore-platform-reqs
 ```
 
 *Build app*
