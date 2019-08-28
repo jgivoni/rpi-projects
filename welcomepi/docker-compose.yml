@@ -1,6 +1,13 @@
 version: '3.2'
 
 services:
+  gpio:
+    image: jgivoni/rpi-gpio-server:2
+    devices:
+      - /dev/gpiomem
+    privileged: true # Needed for PWM
+    restart: unless-stopped
+
   welcomepi:
     image: welcomepi:latest
     build: .
@@ -11,13 +18,8 @@ services:
     links:
       - gpio
     restart: unless-stopped
-
-  gpio:
-    image: jgivoni/rpi-gpio-server:latest
-    devices:
-      - /dev/gpiomem
-    privileged: true # Needed for PWM
-    restart: unless-stopped
+    depends_on:
+      - gpio
 
 #  composer:
 #    image: composer

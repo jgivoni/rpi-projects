@@ -14,9 +14,14 @@ class SocketAdapter extends BaseAdapter
     protected function getSocket()
     {
         if (!isset($this->socket)) {
-            $this->socket = fsockopen('gpio', '7695');
-            stream_set_timeout($this->getSocket(), 0, self::READ_TIMEOUT_MS * 1000);
-            $this->receive(10000); // Flush the welcome response
+            $socket = fsockopen('gpio', '7695', $errno, $errstr, 60);
+            if ($socket !== false) {
+                stream_set_timeout($socket, 0, self::READ_TIMEOUT_MS * 1000);
+                $this->socket = $socket;
+                $this->receive(10000); // Flush the welcome response
+            } else {
+                echo "Error connecting to gpio:7695: " . $errstr;
+            }
         }
         return $this->socket;
     }
@@ -26,12 +31,19 @@ class SocketAdapter extends BaseAdapter
         if ($this->debug) {
             echo "Out: " . $command . PHP_EOL;
         }
-        fwrite($this->getSocket(), $command . PHP_EOL);
+        $result = fwrite($this->getSocket(), $command . PHP_EOL);
+        if ($result === false) {
+            unset($this->socket);
+        }
+        return $result !== false;
     }
 
     protected function receive($length)
     {
         $in = fread($this->getSocket(), $length);
+        if ($in === false) {
+            unset($this->socket);
+        }
         if ($this->debug) {
             echo "In: " . $in . PHP_EOL;
         }
@@ -41,7 +53,7 @@ class SocketAdapter extends BaseAdapter
 
     public function open($pin, $direction, $arg2 = '')
     {
-        $this->send('open ' . $pin . ' ' . $direction . ' ' . $arg2);
+        return $this->send('open ' . $pin . ' ' . $direction . ' ' . $arg2);
     }
 
     public function write($pin, $intensity)

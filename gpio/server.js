@@ -1,5 +1,8 @@
 var net = require('net');
 var rpio = require('rpio');
+// https://www.npmjs.com/package/rpio
+
+rpio.init({gpiomem: false});
 
 var server = net.createServer((c) => {
     console.log('Client connected');

@@ -13,5 +13,7 @@ $ docker run -it --rm --privileged -p 7695:7695 jgivoni/rpi-gpio-server
 
 Push the image to the Docker Hub
 ```
+$ docker image tag jgivoni/rpi-gpio-server jgivoni/rpi-gpio-server:XXX
+$ docker login
 $ docker push jgivoni/rpi-gpio-server
 ```
