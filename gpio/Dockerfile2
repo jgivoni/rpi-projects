@@ -1,0 +1,3 @@
+FROM jgivoni/rpi-gpio-server:1
+
+COPY ./server.js /usr/src/app/

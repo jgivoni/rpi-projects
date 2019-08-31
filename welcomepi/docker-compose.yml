@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   gpio:
-    image: jgivoni/rpi-gpio-server:2
+    image: jgivoni/rpi-gpio-server:3
     devices:
       - /dev/gpiomem
     privileged: true # Needed for PWM
