@@ -13,40 +13,42 @@ var server = net.createServer((c) => {
     var stream = "";
 
     var specialParams = {
-        'cb': function(pin) {
+        'cb': function (pin) {
             c.write('X');
         }
     };
 
     c.on('data', (data) => {
-        stream += data.toString();
+        try {
+            stream += data.toString();
 
-        while (stream.indexOf("\n") > 0) {
-            var command = stream.substr(0, stream.indexOf("\n"));
-            stream = stream.substr(stream.indexOf("\n") + 1);
-            console.log("In: " + command);
+            while (stream.indexOf("\n") > 0) {
+                var command = stream.substr(0, stream.indexOf("\n"));
+                stream = stream.substr(stream.indexOf("\n") + 1);
+                console.log(command);
 
-            var params = command.split(" ").map(function(x) {
-                if (x.indexOf(':') === 0) {
-                    return specialParams[x.substr(1)];
-                } else {
-                    return isNaN(x) ? x.trim() : parseInt(x);
-                }
-            });
-            var method = params.shift().trim();
+                var cmd = JSON.parse(command);
 
-            if (rpio[method]) {
-                var result = rpio[method].apply(rpio, params);
-                if (typeof result === 'boolean' || typeof result === 'number') {
-                    result = result.toString();
+                var method;
+
+                for (method in cmd) {
+                    var params = cmd[method];
+
+                    if (rpio[method]) {
+                        var result = rpio[method].apply(rpio, params);
+                        if (result !== undefined) {
+                            var rs = JSON.stringify(result);
+                            console.log(rs);
+                            c.write(rs);
+                        }
+                    } else {
+                        throw new Error("Invalid command \"" + method + "\"");
+                    }
                 }
-                if (typeof result === 'string') {
-                    console.log("Out: " + result);
-                    c.write(result);
-                }
-            } else {
-                console.log(method + " not supported");
             }
+        } catch (e) {
+            console.log(e.toString());
+            return;
         }
     });
 });
@@ -57,7 +59,7 @@ server.listen(7695, () => {
 });
 
 // Stop on CTRL+C
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
     console.log('Terminating');
     process.exit();
 });
