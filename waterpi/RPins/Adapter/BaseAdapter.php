@@ -19,9 +19,16 @@ abstract class BaseAdapter implements AdapterInterface
     const POLL_HIGH = 2;
     const POLL_BOTH = 3;
 
+    /**
+     * @var bool
+     */
     protected $debug;
 
-    public function setDebug($debug)
+    /**
+     * @param bool $debug
+     * @return \RPins\Adapter\BaseAdapter
+     */
+    public function setDebug(bool $debug): self
     {
         $this->debug = $debug;
         return $this;

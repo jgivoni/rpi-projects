@@ -2,7 +2,8 @@ version: '3.2'
 
 services:
   gpio:
-    image: jgivoni/rpi-gpio-server:3
+    image: jgivoni/rpi-gpio-server:4
+    container_name: gpio
     devices:
       - /dev/gpiomem
     privileged: true # Needed for PWM
@@ -10,6 +11,7 @@ services:
 
   welcomepi:
     image: welcomepi:latest
+    container_name: app
     build: .
     volumes:
       - type: bind

@@ -10,31 +10,53 @@ use RPins\Adapter\BaseAdapter as Adapter;
 
 abstract class Pin
 {
+    /**
+     * @var \RPins\Adapter\BaseAdapter
+     */
     private $adapter;
+
+    /**
+     * @var int
+     */
     private $pin;
 
+    /**
+     * @var int
+     */
     private $direction;
+
+    /**
+     * @var bool
+     */
     private $open = false;
 
     /**
-     * @param $pin Pin number, sequentially numbered from 1-40, starting from upper left corner (not GPIO numbers)
+     * @param int $pin Pin number, sequentially numbered from 1-40, starting from upper left corner (not GPIO numbers)
      */
-    public function __construct($pin)
+    public function __construct(int $pin)
     {
         $this->pin = $pin;
     }
 
-    protected function getPin()
+    /**
+     * @return int
+     */
+    protected function getPin(): int
     {
         return $this->pin;
     }
 
-    public function setAdapter($adapter)
+    /**
+     * @param Adapter $adapter
+     */
+    public function setAdapter(Adapter $adapter): void
     {
         $this->adapter = $adapter;
-        $this->open();
     }
 
+    /**
+     * @return Adapter
+     */
     protected function getAdapter(): Adapter
     {
         if (!isset($this->adapter)) {
@@ -43,20 +65,30 @@ abstract class Pin
         return $this->adapter;
     }
 
-    protected function setDirection(int $direction)
+    /**
+     * @param int $direction
+     * @return \RPins\Pin
+     */
+    protected function setDirection(int $direction): self
     {
         $this->direction = $direction;
         return $this;
     }
 
-    protected function open($arg2 = '')
+    /**
+     * @param int|null $arg2
+     */
+    protected function open(?int $arg2 = null): void
     {
         if (!$this->open) {
             $this->open = $this->getAdapter()->open($this->getPin(), $this->direction, $arg2);
         }
     }
 
-    protected function close()
+    /**
+     *
+     */
+    protected function close(): void
     {
         if (!$this->open) {
             $this->getAdapter()->close($this->getPin());
@@ -64,6 +96,9 @@ abstract class Pin
         }
     }
 
+    /**
+     *
+     */
     public function __destruct()
     {
         $this->close();

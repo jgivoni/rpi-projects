@@ -52,8 +52,7 @@ abstract class Pin
     protected function open($arg2 = '')
     {
         if (!$this->open) {
-            $this->getAdapter()->open($this->getPin(), $this->direction, $arg2);
-            $this->open = true;
+            $this->open = $this->getAdapter()->open($this->getPin(), $this->direction, $arg2);
         }
     }
 

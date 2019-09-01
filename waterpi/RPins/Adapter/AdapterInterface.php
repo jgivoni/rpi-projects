@@ -4,17 +4,50 @@ namespace RPins\Adapter;
 
 interface AdapterInterface
 {
-    public function open($pin, $direction, $arg2 = '');
+    /**
+     * @param int $pin
+     * @param int $direction
+     * @param int|null $arg2
+     * @return bool
+     */
+    public function open(int $pin, int $direction, int $arg2 = null): bool;
 
-    public function close($pin);
+    /**
+     * @param int $pin
+     * @return bool
+     */
+    public function close(int $pin): bool;
 
-    public function write($pin, $intensity);
+    /**
+     * @param int $pin
+     * @param int $intensity
+     * @return bool
+     */
+    public function write(int $pin, int $intensity): bool;
 
-    public function read($pin);
+    /**
+     * @param int $pin
+     * @return string
+     */
+    public function read(int $pin): string;
 
-    public function pwmSetClockDivider($divider);
+    /**
+     * @param int $divider
+     * @return bool
+     */
+    public function pwmSetClockDivider(int $divider): bool;
 
-    public function pwmSetRange($pin, $range);
+    /**
+     * @param int $pin
+     * @param int $range
+     * @return bool
+     */
+    public function pwmSetRange(int $pin, int $range): bool;
 
-    public function pwmSetData($pin, $data);
+    /**
+     * @param int $pin
+     * @param string $data
+     * @return bool
+     */
+    public function pwmSetData(int $pin, int $data): bool;
 }

@@ -38,9 +38,11 @@ class AnalogOutPin extends Pin
 
     public function setIntensity($intensity)
     {
-        $this->intensity = $intensity;
-        $this->open();
-        $this->getAdapter()->pwmSetData($this->getPin(), (int) self::RANGE * $this->intensity);
+        if ($intensity != $this->getIntensity()) {
+            $this->intensity = $intensity;
+            $this->open();
+            $this->getAdapter()->pwmSetData($this->getPin(), round(self::RANGE * $this->getIntensity()));
+        }
     }
 
     /**
@@ -56,4 +58,40 @@ class AnalogOutPin extends Pin
         $this->setIntensity(Adapter::INTENSITY_LOW);
     }
 
+    public function getIntensity()
+    {
+        return $this->intensity;
+    }
+
+    /**
+     * @param \RPins\int $ms Time in milliseconds for a full fade in
+     * @param Callable $interruptCallback Function, if returns true, abort fade in
+     */
+    public function fadeIn(int $ms, $interruptCallback = null)
+    {
+        $sleepmu = $ms * 10;
+        for ($i = round($this->getIntensity() * 100); $i <= 100; $i++) {
+            $this->setIntensity($i / 100);
+            usleep($sleepmu);
+            if (isset($interruptCallback) && $interruptCallback()) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param \RPins\int $ms Time in milliseconds for a full fade out
+     * @param Callable $interruptCallback Function, if returns true, abort fade out
+     */
+    public function fadeOut(int $ms, $interruptCallback = null)
+    {
+        $sleepmu = $ms * 10;
+        for ($i = round($this->getIntensity() * 100); $i >= 0; $i--) {
+            $this->setIntensity($i / 100);
+            usleep($sleepmu);
+            if (isset($interruptCallback) && $interruptCallback()) {
+                break;
+            }
+        }
+    }
 }

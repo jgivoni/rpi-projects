@@ -13,15 +13,26 @@ use RPins\Adapter\BaseAdapter as Adapter;
  */
 class OutPin extends Pin
 {
+    /**
+     * @var int
+     */
     private $intensity = Adapter::INTENSITY_LOW;
 
-    public function __construct($pin)
+    /**
+     * OutPin constructor.
+     *
+     * @param int $pin
+     */
+    public function __construct(int $pin)
     {
         parent::__construct($pin);
         $this->setDirection(Adapter::DIRECTION_OUT);
     }
 
-    protected function setIntensity($intensity)
+    /**
+     * @param int $intensity
+     */
+    protected function setIntensity(int $intensity): void
     {
         $this->intensity = $intensity;
         $this->open($intensity);
@@ -31,14 +42,16 @@ class OutPin extends Pin
     /**
      * Turns power on the pin
      */
-    public function on()
+    public function on(): void
     {
         $this->setIntensity(Adapter::INTENSITY_HIGH);
     }
 
-    public function off()
+    /**
+     *
+     */
+    public function off(): void
     {
         $this->setIntensity(Adapter::INTENSITY_LOW);
     }
-
 }

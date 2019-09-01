@@ -9,8 +9,14 @@ class SocketAdapter extends BaseAdapter
 {
     const READ_TIMEOUT_MS = 100;
 
+    /**
+     * @var resource
+     */
     private $socket;
 
+    /**
+     * @return resource
+     */
     protected function getSocket()
     {
         if (!isset($this->socket)) {
@@ -26,8 +32,16 @@ class SocketAdapter extends BaseAdapter
         return $this->socket;
     }
 
-    protected function send($command)
+    /**
+     * @param string $method
+     * @param array $params
+     * @return bool
+     */
+    protected function send(string $method, array $params): bool
     {
+        $command = json_encode([
+            $method => $params,
+        ]);
         if ($this->debug) {
             echo "Out: " . $command . PHP_EOL;
         }
@@ -38,7 +52,11 @@ class SocketAdapter extends BaseAdapter
         return $result !== false;
     }
 
-    protected function receive($length)
+    /**
+     * @param int $length
+     * @return string
+     */
+    protected function receive(int $length): string
     {
         $in = fread($this->getSocket(), $length);
         if ($in === false) {
@@ -51,41 +69,82 @@ class SocketAdapter extends BaseAdapter
         return $in === false ? '' : $in;
     }
 
-    public function open($pin, $direction, $arg2 = '')
+    /**
+     * @param array $options
+     * @return bool
+     */
+    public function init(array $options): bool
     {
-        return $this->send('open ' . $pin . ' ' . $direction . ' ' . $arg2);
+        return $this->send('init', [$options]);
     }
 
-    public function write($pin, $intensity)
+    /**
+     * @param int $pin
+     * @param int $direction
+     * @param int $arg2
+     * @return bool
+     */
+    public function open(int $pin, int $direction, ?int $arg2 = null): bool
     {
-        $this->send('write ' . $pin . ' ' . $intensity);
+        return $this->send('open', [$pin, $direction, $arg2]);
     }
 
-    public function read($pin)
+    /**
+     * @param int $pin
+     * @param int $intensity
+     * @return bool
+     */
+    public function write(int $pin, int $intensity): bool
     {
-        $this->send('read ' . $pin);
+        return $this->send('write', [$pin, $intensity]);
+    }
+
+    /**
+     * @param int $pin
+     * @return string
+     */
+    public function read(int $pin): ?bool
+    {
+        $this->send('read', [$pin]);
         $input = $this->receive(1);
-        return $input == '' ? null : (bool) $input;
+        return $input == '' ? null : (bool)$input;
     }
 
-    public function close($pin)
+    /**
+     * @param int $pin
+     * @return bool
+     */
+    public function close(int $pin): bool
     {
-        $this->send('close ' . $pin);
+        return $this->send('close', [$pin]);
     }
 
-    public function pwmSetClockDivider($divider)
+    /**
+     * @param int $divider
+     * @return bool
+     */
+    public function pwmSetClockDivider(int $divider): bool
     {
-        $this->send('pwmSetClockDivider ' . $divider);
+        return $this->send('pwmSetClockDivider', [$divider]);
     }
 
-    public function pwmSetRange($pin, $range)
+    /**
+     * @param int $pin
+     * @param int $range
+     * @return bool
+     */
+    public function pwmSetRange(int $pin, int $range): bool
     {
-        $this->send('pwmSetRange ' . $pin . ' ' . $range);
+        return $this->send('pwmSetRange', [$pin, $range]);
     }
 
-    public function pwmSetData($pin, $data)
+    /**
+     * @param int $pin
+     * @param int $data
+     * @return bool
+     */
+    public function pwmSetData(int $pin, int $data): bool
     {
-        $this->send('pwmSetData ' . $pin . ' ' . $data);
+        return $this->send('pwmSetData', [$pin, $data]);
     }
-
 }
