@@ -1,0 +1,61 @@
+Generate codes
+http://www.qr-code-generator.com/
+* Select TEXT
+* Type number with 3 digits (XXX)
+* Click Create QR code
+* Click Download
+* Wait 5 sec (ignore signup)
+* Open downloaded zip or frame.png
+* Rename file to XXX.png and move to /Documents/jukeboxpi/
+
+Print cards
+https://docs.google.com/drawings/d/1HQFDTLgpFmgtnrFcs0in0T17JNq6hlUoTINsBjsFNg4/edit
+
+Create MP3 files from Youtube
+* Search for the song
+* Copy url
+* Go to
+    * https://ytmp3.cc/
+    * https://www.onlinevideoconverter.com/video-converter
+* Paste in Youtube link
+* Select mp3 format
+* Download the file
+
+$ cd /home/pi/jukebox/songs/
+
+001: Trampolin
+002: Bonjour
+003: Jamaica
+004: Oles nye autobil
+005: Life is a highway
+006: Patrulla Canina
+007: Gangnam style
+008: Cant del Barça
+009: Un Peix
+010: Bajo el mismo sol
+011: Tangokat
+012: Cars II theme
+013: Pantera rosa
+014: Corre caminos
+015: Cars 3 - Drive my car
+016: Waka waka - samina-mina
+017: Indianer
+018: Tju bang chokolademand
+019: I want to break free
+020: Jeg har fanget mig en myg
+021: Ghostbusters
+022: Pippi Langstrømpe
+023: Radio Rita
+024: Kickflipper
+025: En la radio hay un pollito
+026: Moana
+027: Gallina Turuleca
+028: Bølle Bob
+
+Copy a song (from host)
+$ scp mysong.mp3 pi@jukeboxpi:/home/pi/jukebox/songs/<xxx>.mp3
+Browse to image
+http://jukeboxpi/jukebox/qr-code.jpg
+http://192.168.0.23/jukebox/qr-code.jpg
+
+
