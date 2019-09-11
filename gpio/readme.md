@@ -28,10 +28,11 @@ Execute a command from host
 ```
 $ telnet 192.168.0.25 7695
 {"init": [{"gpiomem": false}]};
-{"open": [7, 0]}
-{"open": [12, 1]}
-{"read": [12]}
+{"open": [7, 1]}
 {"write": [7, 1]}
+{"write": [7, 0]}
+{"open": [12, 0]}
+{"read": [12]}
 
 open 7 0
 open 12 1
