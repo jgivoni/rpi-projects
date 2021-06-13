@@ -8,6 +8,10 @@ services:
       - /dev/gpiomem
     privileged: true # Needed for PWM
     restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   welcomepi:
     image: welcomepi:latest
@@ -22,6 +26,10 @@ services:
     restart: unless-stopped
     depends_on:
       - gpio
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 #  composer:
 #    image: composer

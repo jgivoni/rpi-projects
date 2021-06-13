@@ -11,3 +11,7 @@ services:
     ports:
       - 7695:7695
     restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
