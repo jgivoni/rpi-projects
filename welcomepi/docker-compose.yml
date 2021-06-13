@@ -1,4 +1,5 @@
 version: '3.2'
+# This file is not in use if docker-compose could not be installed on the raspberry (e.g. model 1)
 
 services:
   gpio:

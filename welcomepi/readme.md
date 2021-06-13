@@ -14,11 +14,16 @@ $ docker build -t <pi-name> .
 
 *Run app*
 ```
-$ docker run -it --rm --name <pi-name> <pi-name>
+$ sh start.sh
 ```
 
-*Launch everything*
+*Stop app*
 ```
-$ docker-compose up --build
-$ docker-compose up -d --build
+$ sh stop.sh
+```
+
+*Test app*
+In test mode, the lights will go on and off regardless of time (sunset/sunrise)
+```
+$ sh test.sh
 ```
